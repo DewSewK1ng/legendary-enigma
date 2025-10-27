@@ -1,207 +1,86 @@
-
-
 local Players = game:GetService("Players")
-local Player = Players.LocalPlayer
-local PlayerGui = Player:WaitForChild("PlayerGui")
-local RunService = game:GetService("RunService")
-local UserInputService = game:GetService("UserInputService")
-local Debris = game:GetService("Debris")
-
--- GUI settings
-local GUI_WIDTH, GUI_HEIGHT = 400, 360
-local TITLE_HEIGHT, NAV_HEIGHT = 30, 30
-local BUTTON_HEIGHT, BUTTON_PADDING = 30, 5
-
+local TweenService = game:GetService("TweenService")
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+local existing = playerGui:FindFirstChild("BlackoutNotice")
+if existing then existing:Destroy() end
 -- ScreenGui
 local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "TeamDewSewGui"
+screenGui.Name = "BlackoutNotice"
 screenGui.ResetOnSpawn = false
-screenGui.Parent = PlayerGui
-
--- Main Frame
-local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, GUI_WIDTH, 0, GUI_HEIGHT)
-mainFrame.Position = UDim2.new(0.5, -GUI_WIDTH / 2, 0.5, -GUI_HEIGHT / 2)
-mainFrame.BackgroundColor3 = Color3.fromRGB(10, 30, 10)
-mainFrame.BorderSizePixel = 0
-mainFrame.Parent = screenGui
-
--- Title Bar
-local titleBar = Instance.new("Frame")
-titleBar.Size = UDim2.new(1, 0, 0, TITLE_HEIGHT)
-titleBar.BackgroundColor3 = Color3.fromRGB(0, 90, 0)
-titleBar.BorderSizePixel = 0
-titleBar.Parent = mainFrame
-
-local titleLabel = Instance.new("TextLabel")
-titleLabel.Size = UDim2.new(1, -30, 1, 0)
-titleLabel.Position = UDim2.new(0, 4, 0, 0)
-titleLabel.BackgroundTransparency = 1
-titleLabel.Text = " Team DewSew! "
-titleLabel.Font = Enum.Font.GothamBold
-titleLabel.TextSize = 18
-titleLabel.TextColor3 = Color3.new(1, 1, 1)
-titleLabel.TextXAlignment = Enum.TextXAlignment.Left
-titleLabel.TextYAlignment = Enum.TextYAlignment.Center
-titleLabel.Parent = titleBar
-
--- Minimize Button
-local minBtn = Instance.new("TextButton")
-minBtn.Size = UDim2.new(0, 30, 1, 0)
-minBtn.Position = UDim2.new(1, -30, 0, 0)
-minBtn.Text = "-"
-minBtn.Font = Enum.Font.GothamBold
-minBtn.TextSize = 18
-minBtn.TextColor3 = Color3.new(1, 1, 1)
-minBtn.BackgroundColor3 = Color3.fromRGB(0, 130, 0)
-minBtn.BorderSizePixel = 0
-minBtn.Parent = titleBar
-
--- Logo
-local logo = Instance.new("ImageLabel")
-logo.BackgroundTransparency = 1
-logo.Size = UDim2.new(1, -20, 0, 80)
-logo.Position = UDim2.new(0, 10, 0, TITLE_HEIGHT + 5)
-logo.Image = "rbxassetid://87486058304609"
-logo.ScaleType = Enum.ScaleType.Fit
-logo.ImageColor3 = Color3.fromRGB(0, 255, 0) --  Green
-logo.Parent = mainFrame
-
--- Scroll Frame
-local buttonFrame = Instance.new("ScrollingFrame")
-buttonFrame.Size = UDim2.new(1, -10, 0, GUI_HEIGHT - TITLE_HEIGHT - 90)
-buttonFrame.Position = UDim2.new(0, 5, 0, TITLE_HEIGHT + 5)
-buttonFrame.BackgroundTransparency = 1
-buttonFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
-buttonFrame.ScrollBarThickness = 6
-buttonFrame.Parent = mainFrame
-
-local UIGridLayout = Instance.new("UIGridLayout")
-UIGridLayout.FillDirection = Enum.FillDirection.Horizontal
-UIGridLayout.CellSize = UDim2.new(0, 120, 0, BUTTON_HEIGHT)
-UIGridLayout.CellPadding = UDim2.new(0, BUTTON_PADDING, 0, BUTTON_PADDING)
-UIGridLayout.Parent = buttonFrame
-
-local pages = {
-	{"Grab knife", "https://rawscripts.net/raw/Universal-Script-Grab-knife-53687"},
-	{"JOHN DOE", "https://raw.githubusercontent.com/retpirato/Roblox-Scripts/refs/heads/master/John%20Doe.lua"},
-	{"C00lclan ui", "https://raw.githubusercontent.com/cfsmi2/c00lguiv1/refs/heads/main/Main.lua"},
-	{"Infinity yield", "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"},
-	{"Fly", "https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"},
-	{"Zero Gravity v3", "https://raw.githubusercontent.com/Bac0nHck/Scripts/refs/heads/main/zerogravity"},
-	{"Spin R6", "localSpinR6"},
-	{"Spin R15", "localSpinR15"},
-	{"Keyboard", "localKeyboard"} -- updated to run your loadstring
-}
-
--- helper: small tween function
-local function tweenProperty(instance, propTable, time)
-	local TweenService = game:GetService("TweenService")
-	local info = TweenInfo.new(time or 0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-	local tween = TweenService:Create(instance, info, propTable)
-	tween:Play()
-	return tween
-end
-
--- spawn button function
-for _, data in ipairs(pages) do
-	local btn = Instance.new("TextButton")
-	btn.Text = data[1]
-	btn.Font = Enum.Font.GothamBold
-	btn.TextSize = 14
-	btn.TextColor3 = Color3.new(1, 1, 1)
-	btn.BackgroundColor3 = Color3.fromRGB(0, 130, 0)
-	btn.BorderSizePixel = 0
-	btn.Parent = buttonFrame
-
-	local glow = Instance.new("UIStroke")
-	glow.Color = Color3.fromRGB(0, 255, 0)
-	glow.Thickness = 1
-	glow.Parent = btn
-
-	btn.MouseButton1Click:Connect(function()
-		local char = Player.Character or Player.CharacterAdded:Wait()
-		local hrp = char:FindFirstChild("HumanoidRootPart") or char:WaitForChild("HumanoidRootPart")
-
-		if data[2] == "localSpinR6" or data[2] == "localSpinR15" then
-			local tag = (data[2] == "localSpinR6") and "SpinGyroR6" or "SpinGyroR15"
-			local existing = hrp:FindFirstChild(tag)
-			if existing then
-				existing:Destroy()
-			else
-				local gyro = Instance.new("BodyGyro")
-				gyro.Name = tag
-				gyro.P = 100000
-				gyro.D = 10
-				gyro.MaxTorque = Vector3.new(0, math.huge, 0)
-				gyro.CFrame = hrp.CFrame
-				gyro.Parent = hrp
-				local angle = 0
-				local conn
-				conn = RunService.RenderStepped:Connect(function(dt)
-					if not gyro.Parent then conn:Disconnect() return end
-					angle = angle + math.rad(10) * 60 * dt
-					pcall(function()
-						gyro.CFrame = hrp.CFrame * CFrame.Angles(0, angle, 0)
-					end)
-				end)
-			end
-
-		elseif data[2] == "localKeyboard" then
-			
-			local ok, err = pcall(function()
-				loadstring(game:HttpGet("https://raw.githubusercontent.com/Xxtan31/Ata/main/deltakeyboardcrack.txt", true))()
-			end)
-			if not ok then
-				warn("Failed to load Keyboard script:", err)
-			end
-
-		else
-			-- remote load (Grab knife & others)
-			local ok, err = pcall(function()
-				loadstring(game:HttpGet(data[2], true))()
-			end)
-			if not ok then warn("Failed to load script:", data[2], err) end
-		end
-	end)
-end
-
--- update scroll size
-buttonFrame.CanvasSize = UDim2.new(0, 0, 0, math.ceil(#pages / 3) * (BUTTON_HEIGHT + BUTTON_PADDING))
-
--- Dragging (Mobile-friendly)
-local dragging = false
-local dragStart, startPos
-titleBar.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
-		dragging = true
-		dragStart = input.Position
-		startPos = mainFrame.Position
-		input.Changed:Connect(function()
-			if input.UserInputState == Enum.UserInputState.End then
-				dragging = false
-			end
-		end)
-	end
+screenGui.Parent = playerGui
+screenGui.DisplayOrder = 9999
+local blackFrame = Instance.new("Frame")
+blackFrame.Name = "BlackFrame"
+blackFrame.Size = UDim2.new(1,0,1,0)
+blackFrame.Position = UDim2.new(0,0,0,0)
+blackFrame.BackgroundColor3 = Color3.new(0,0,0)
+blackFrame.BackgroundTransparency = 1
+blackFrame.BorderSizePixel = 0
+blackFrame.Parent = screenGui
+blackFrame.ZIndex = 10
+blackFrame.Active = true  -- helps block input behind it
+local blocker = Instance.new("TextButton")
+blocker.Name = "InputBlocker"
+blocker.Size = UDim2.new(1,0,1,0)
+blocker.Position = UDim2.new(0,0,0,0)
+blocker.BackgroundTransparency = 1
+blocker.Text = ""
+blocker.AutoButtonColor = false
+blocker.BorderSizePixel = 0
+blocker.Parent = blackFrame
+blocker.ZIndex = 11
+local messageFrame = Instance.new("Frame")
+messageFrame.Size = UDim2.new(0.8,0,0.25,0)
+messageFrame.Position = UDim2.new(0.1,0,0.37,0)
+messageFrame.BackgroundTransparency = 1
+messageFrame.Parent = blackFrame
+messageFrame.ZIndex = 12
+local label = Instance.new("TextLabel")
+label.Size = UDim2.new(1,0,1,0)
+label.Position = UDim2.new(0,0,0,0)
+label.BackgroundTransparency = 1
+label.Text = "Sorry this script no longer exists.\nGet it on the link in my bio."
+label.TextWrapped = true
+label.TextScaled = true
+label.Font = Enum.Font.GothamBold
+label.TextColor3 = Color3.new(1,1,1)
+label.TextYAlignment = Enum.TextYAlignment.Center
+label.TextXAlignment = Enum.TextXAlignment.Center
+label.Parent = messageFrame
+label.ZIndex = 13
+-- small sublabel (optional) to mimic "link in bio" hint
+local sub = Instance.new("TextLabel")
+sub.Size = UDim2.new(1,0,0.16,0)
+sub.Position = UDim2.new(0,0,0.85,0)
+sub.BackgroundTransparency = 1
+sub.Text = "(check my bio on yt for the link)"
+sub.TextWrapped = true
+sub.TextScaled = true
+sub.Font = Enum.Font.Gotham
+sub.TextColor3 = Color3.fromRGB(200,200,200)
+sub.Parent = messageFrame
+sub.ZIndex = 13
+-- Fade in
+local tweenInfo = TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+local fadeIn = TweenService:Create(blackFrame, tweenInfo, {BackgroundTransparency = 0})
+fadeIn:Play()
+-- Optional: pulse the label slightly for emphasis
+spawn(function()
+    while screenGui.Parent do
+        local t1 = TweenService:Create(label, TweenInfo.new(0.6, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {TextTransparency = 0.15})
+        local t2 = TweenService:Create(label, TweenInfo.new(0.6, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {TextTransparency = 0})
+        t1:Play(); t1.Completed:Wait()
+        t2:Play(); t2.Completed:Wait()
+        wait(0.8)
+    end
 end)
-
-UserInputService.InputChanged:Connect(function(move)
-	if not dragging then return end
-	if not dragStart or not startPos then return end
-	if move.Position then
-		local delta = move.Position - dragStart
-		mainFrame.Position = UDim2.new(0, startPos.X.Offset + delta.X, 0, startPos.Y.Offset + delta.Y)
-	end
-end)
-
--- Minimize toggle
-local minimized = false
-minBtn.MouseButton1Click:Connect(function()
-	minimized = not minimized
-	buttonFrame.Visible = not minimized
-	logo.Visible = not minimized
-	mainFrame.BackgroundTransparency = minimized and 0.9 or 0
-	minBtn.Text = minimized and "◻" or "-"
-end)
-
-print("Im the best right?")
+-- Prevent typical exit keys from closing it unintentionally (optional safety)
+blocker.MouseButton1Down:Connect(function() end)
+blocker.MouseButton2Down:Connect(function() end)
+-- If you want it to auto-remove after X seconds, uncomment the lines below and set seconds
+-- wait(6)
+-- local fadeOut = TweenService:Create(blackFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {BackgroundTransparency = 1})
+-- fadeOut:Play()
+-- fadeOut.Completed:Wait()
+-- screenGui:Destroy()
