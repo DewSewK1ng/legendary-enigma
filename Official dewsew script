@@ -1,5 +1,4 @@
--- 📗 Team DewSew GUI - Full Green Version (Keyboard button runs your loadstring)
--- 💚 Auto Opens | Draggable | Spin R6 + R15 | All Scripts Included | Keyboard button executes remote script
+
 
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
@@ -38,7 +37,7 @@ local titleLabel = Instance.new("TextLabel")
 titleLabel.Size = UDim2.new(1, -30, 1, 0)
 titleLabel.Position = UDim2.new(0, 4, 0, 0)
 titleLabel.BackgroundTransparency = 1
-titleLabel.Text = "💚 Team DewSew! 💚"
+titleLabel.Text = " Team DewSew! "
 titleLabel.Font = Enum.Font.GothamBold
 titleLabel.TextSize = 18
 titleLabel.TextColor3 = Color3.new(1, 1, 1)
@@ -65,7 +64,7 @@ logo.Size = UDim2.new(1, -20, 0, 80)
 logo.Position = UDim2.new(0, 10, 0, TITLE_HEIGHT + 5)
 logo.Image = "rbxassetid://87486058304609"
 logo.ScaleType = Enum.ScaleType.Fit
-logo.ImageColor3 = Color3.fromRGB(0, 255, 0) -- ✅ Green
+logo.ImageColor3 = Color3.fromRGB(0, 255, 0) --  Green
 logo.Parent = mainFrame
 
 -- Scroll Frame
@@ -83,7 +82,6 @@ UIGridLayout.CellSize = UDim2.new(0, 120, 0, BUTTON_HEIGHT)
 UIGridLayout.CellPadding = UDim2.new(0, BUTTON_PADDING, 0, BUTTON_PADDING)
 UIGridLayout.Parent = buttonFrame
 
--- 🔹 Buttons list
 local pages = {
 	{"Grab knife", "https://rawscripts.net/raw/Universal-Script-Grab-knife-53687"},
 	{"JOHN DOE", "https://raw.githubusercontent.com/retpirato/Roblox-Scripts/refs/heads/master/John%20Doe.lua"},
@@ -150,7 +148,7 @@ for _, data in ipairs(pages) do
 			end
 
 		elseif data[2] == "localKeyboard" then
-			-- 🔹 Run the actual keyboard loadstring
+			
 			local ok, err = pcall(function()
 				loadstring(game:HttpGet("https://raw.githubusercontent.com/Xxtan31/Ata/main/deltakeyboardcrack.txt", true))()
 			end)
@@ -206,4 +204,4 @@ minBtn.MouseButton1Click:Connect(function()
 	minBtn.Text = minimized and "◻" or "-"
 end)
 
-print("Team DewSew GUI loaded — Keyboard button now runs your script.")
+print("Im the best right?")
