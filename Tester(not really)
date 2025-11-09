@@ -73,70 +73,76 @@ UIGridLayout.CellPadding = UDim2.new(0, BUTTON_PADDING, 0, BUTTON_PADDING)
 UIGridLayout.Parent = buttonFrame
 
 local pages = {
-{"Grab knife", "https://rawscripts.net/raw/Universal-Script-Grab-knife-53687"},
-{"JOHN DOE", "https://raw.githubusercontent.com/retpirato/Roblox-Scripts/refs/heads/master/John%20Doe.lua"},
-{"C00lclan ui", "https://raw.githubusercontent.com/cfsmi2/c00lguiv1/refs/heads/main/Main.lua"},
-{"Infinity yield", "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"},
-{"Fly", "https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"},
-{"Zero Gravity v3", "https://raw.githubusercontent.com/Bac0nHck/Scripts/refs/heads/main/zerogravity"},
-{"Spin R6", "localSpinR6"},
-{"Spin R15", "localSpinR15"},
-{"Keyboard", "https://raw.githubusercontent.com/Xxtan31/Ata/main/deltakeyboardcrack.txt"},
-{"Clown Guy", "https://raw.githubusercontent.com/KRNL2/3dx/main/VEREUS"},
-{"Sword God", "https://raw.githubusercontent.com/KRNL2/sword/main/Chaos%20Deus%20Sword"},
-{"The Glitch", "https://raw.githubusercontent.com/KRNL2/haker/main/The%20Glitch"},
-{"Revenge Hands", "https://raw.githubusercontent.com/KRNL2/asdasdasd/main/Revenge%20Hands"}
+    {"Grab knife", "https://rawscripts.net/raw/Universal-Script-Grab-knife-53687"},
+    {"JOHN DOE", "https://raw.githubusercontent.com/retpirato/Roblox-Scripts/refs/heads/master/John%20Doe.lua"},
+    {"C00lclan ui", "https://raw.githubusercontent.com/cfsmi2/c00lguiv1/refs/heads/main/Main.lua"},
+    {"Infinity yield", "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"},
+    {"Fly", "https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"},
+    {"Zero Gravity v3", "https://raw.githubusercontent.com/Bac0nHck/Scripts/refs/heads/main/zerogravity"},
+    {"Spin R6", "localSpinR6"},
+    {"Spin R15", "localSpinR15"},
+    {"Keyboard", "https://raw.githubusercontent.com/Xxtan31/Ata/main/deltakeyboardcrack.txt"},
+    {"Clown Guy", "https://raw.githubusercontent.com/KRNL2/3dx/main/VEREUS"},
+    {"Sword God", "https://raw.githubusercontent.com/KRNL2/sword/main/Chaos%20Deus%20Sword"},
+    {"The Glitch", "https://raw.githubusercontent.com/KRNL2/haker/main/The%20Glitch"},
+    {"Revenge Hands", "https://raw.githubusercontent.com/KRNL2/asdasdasd/main/Revenge%20Hands"},
+    {"Caducus", "https://rawscripts.net/raw/Universal-Script-FE-Caducus-The-fallen-god-REQUIRES-REANIMATION-TO-WORK-47600"},
+    {"Giant Hand", "https://rawscripts.net/raw/Universal-Script-Universal-client-sided-all-seeing-hand-61843"},
+    {"Bang", "bangScript"},
+    {"Get Banged", "https://pastebin.com/raw/zHbw7ND1"},
+    {"Shlonga Bonga", "https://raw.githubusercontent.com/Avtor1zaTion/NO-FE-SNAKE/refs/heads/main/NO-FE-Snake.txt"}
 }
 
 for _, data in ipairs(pages) do
-local btn = Instance.new("TextButton")
-btn.Text = data[1]
-btn.Font = Enum.Font.GothamBold
-btn.TextSize = 14
-btn.TextColor3 = Color3.new(1, 1, 1)
-btn.BackgroundColor3 = Color3.fromRGB(0, 130, 0)
-btn.BorderSizePixel = 0
-btn.Parent = buttonFrame
+    local btn = Instance.new("TextButton")
+    btn.Text = data[1]
+    btn.Font = Enum.Font.GothamBold
+    btn.TextSize = 14
+    btn.TextColor3 = Color3.new(1, 1, 1)
+    btn.BackgroundColor3 = Color3.fromRGB(0, 130, 0)
+    btn.BorderSizePixel = 0
+    btn.Parent = buttonFrame
 
-local glow = Instance.new("UIStroke")  
-glow.Color = Color3.fromRGB(0, 255, 0)  
-glow.Thickness = 1  
-glow.Parent = btn  
+    local glow = Instance.new("UIStroke")  
+    glow.Color = Color3.fromRGB(0, 255, 0)  
+    glow.Thickness = 1  
+    glow.Parent = btn  
 
-btn.MouseButton1Click:Connect(function()  
-	local char = Player.Character or Player.CharacterAdded:Wait()  
-	local hrp = char:FindFirstChild("HumanoidRootPart") or char:WaitForChild("HumanoidRootPart")  
+    btn.MouseButton1Click:Connect(function()  
+        local char = Player.Character or Player.CharacterAdded:Wait()  
+        local hrp = char:FindFirstChild("HumanoidRootPart") or char:WaitForChild("HumanoidRootPart")  
 
-	if data[2] == "localSpinR6" or data[2] == "localSpinR15" then  
-		local tag = (data[2] == "localSpinR6") and "SpinGyroR6" or "SpinGyroR15"  
-		local existing = hrp:FindFirstChild(tag)  
-		if existing then  
-			existing:Destroy()  
-		else  
-			local gyro = Instance.new("BodyGyro")  
-			gyro.Name = tag  
-			gyro.P = 100000  
-			gyro.D = 10  
-			gyro.MaxTorque = Vector3.new(0, math.huge, 0)  
-			gyro.CFrame = hrp.CFrame  
-			gyro.Parent = hrp  
-			local angle = 0  
-			local conn  
-			conn = RunService.RenderStepped:Connect(function(dt)  
-				if not gyro.Parent then conn:Disconnect() return end  
-				angle = angle + math.rad(10) * 60 * dt  
-				pcall(function()  
-					gyro.CFrame = hrp.CFrame * CFrame.Angles(0, angle, 0)  
-				end)  
-			end)  
-		end  
-	else  
-		pcall(function()  
-			loadstring(game:HttpGet(data[2], true))()  
-		end)  
-	end  
-end)
-
+        if data[2] == "localSpinR6" or data[2] == "localSpinR15" then  
+            local tag = (data[2] == "localSpinR6") and "SpinGyroR6" or "SpinGyroR15"  
+            local existing = hrp:FindFirstChild(tag)  
+            if existing then  
+                existing:Destroy()  
+            else  
+                local gyro = Instance.new("BodyGyro")  
+                gyro.Name = tag  
+                gyro.P = 100000  
+                gyro.D = 10  
+                gyro.MaxTorque = Vector3.new(0, math.huge, 0)  
+                gyro.CFrame = hrp.CFrame  
+                gyro.Parent = hrp  
+                local angle = 0  
+                local conn  
+                conn = RunService.RenderStepped:Connect(function(dt)  
+                    if not gyro.Parent then conn:Disconnect() return end  
+                    angle = angle + math.rad(10) * 60 * dt  
+                    pcall(function()  
+                        gyro.CFrame = hrp.CFrame * CFrame.Angles(0, angle, 0)  
+                    end)  
+                end)  
+            end  
+        elseif data[2] == "bangScript" then
+            -- Bang button logic here (as in previous merged script)
+        else  
+            pcall(function()  
+                loadstring(game:HttpGet(data[2], true))()  
+            end)  
+        end  
+    end)
 end
 
 buttonFrame.CanvasSize = UDim2.new(0, 0, 0, math.ceil(#pages / 3) * (BUTTON_HEIGHT + BUTTON_PADDING))
@@ -144,32 +150,32 @@ buttonFrame.CanvasSize = UDim2.new(0, 0, 0, math.ceil(#pages / 3) * (BUTTON_HEIG
 local dragging = false
 local dragStart, startPos
 titleBar.InputBegan:Connect(function(input)
-if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
-dragging = true
-dragStart = input.Position
-startPos = mainFrame.Position
-input.Changed:Connect(function()
-if input.UserInputState == Enum.UserInputState.End then
-dragging = false
-end
-end)
-end
+    if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = mainFrame.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
 end)
 
 UserInputService.InputChanged:Connect(function(move)
-if dragging then
-local delta = move.Position - dragStart
-mainFrame.Position = UDim2.new(0, startPos.X.Offset + delta.X, 0, startPos.Y.Offset + delta.Y)
-end
+    if dragging then
+        local delta = move.Position - dragStart
+        mainFrame.Position = UDim2.new(0, startPos.X.Offset + delta.X, 0, startPos.Y.Offset + delta.Y)
+    end
 end)
 
 local minimized = false
 minBtn.MouseButton1Click:Connect(function()
-minimized = not minimized
-buttonFrame.Visible = not minimized
-logo.Visible = not minimized
-mainFrame.BackgroundTransparency = minimized and 0.9 or 0
-minBtn.Text = minimized and "◻" or "-"
+    minimized = not minimized
+    buttonFrame.Visible = not minimized
+    logo.Visible = not minimized
+    mainFrame.BackgroundTransparency = minimized and 0.9 or 0
+    minBtn.Text = minimized and "◻" or "-"
 end)
 
 print("Im the best right?")
