@@ -88,7 +88,7 @@ local pages = {
     {"Revenge Hands", "https://raw.githubusercontent.com/KRNL2/asdasdasd/main/Revenge%20Hands"},
     {"Caducus", "https://rawscripts.net/raw/Universal-Script-FE-Caducus-The-fallen-god-REQUIRES-REANIMATION-TO-WORK-47600"},
     {"Giant Hand", "https://rawscripts.net/raw/Universal-Script-Universal-client-sided-all-seeing-hand-61843"},
-    {"Bang", "bangScript"},
+    {"Guest 666", "https://rawscripts.net/raw/Universal-Script-Fe-Guest-666-Only-anims-are-fe-53309"},
     {"Get Banged", "https://pastebin.com/raw/zHbw7ND1"},
     {"Shlonga Bonga", "https://raw.githubusercontent.com/Avtor1zaTion/NO-FE-SNAKE/refs/heads/main/NO-FE-Snake.txt"}
 }
@@ -103,45 +103,43 @@ for _, data in ipairs(pages) do
     btn.BorderSizePixel = 0
     btn.Parent = buttonFrame
 
-    local glow = Instance.new("UIStroke")  
-    glow.Color = Color3.fromRGB(0, 255, 0)  
-    glow.Thickness = 1  
-    glow.Parent = btn  
+    local glow = Instance.new("UIStroke")
+    glow.Color = Color3.fromRGB(0, 255, 0)
+    glow.Thickness = 1
+    glow.Parent = btn
 
-    btn.MouseButton1Click:Connect(function()  
-        local char = Player.Character or Player.CharacterAdded:Wait()  
-        local hrp = char:FindFirstChild("HumanoidRootPart") or char:WaitForChild("HumanoidRootPart")  
+    btn.MouseButton1Click:Connect(function()
+        local char = Player.Character or Player.CharacterAdded:Wait()
+        local hrp = char:FindFirstChild("HumanoidRootPart") or char:WaitForChild("HumanoidRootPart")
 
-        if data[2] == "localSpinR6" or data[2] == "localSpinR15" then  
-            local tag = (data[2] == "localSpinR6") and "SpinGyroR6" or "SpinGyroR15"  
-            local existing = hrp:FindFirstChild(tag)  
-            if existing then  
-                existing:Destroy()  
-            else  
-                local gyro = Instance.new("BodyGyro")  
-                gyro.Name = tag  
-                gyro.P = 100000  
-                gyro.D = 10  
-                gyro.MaxTorque = Vector3.new(0, math.huge, 0)  
-                gyro.CFrame = hrp.CFrame  
-                gyro.Parent = hrp  
-                local angle = 0  
-                local conn  
-                conn = RunService.RenderStepped:Connect(function(dt)  
-                    if not gyro.Parent then conn:Disconnect() return end  
-                    angle = angle + math.rad(10) * 60 * dt  
-                    pcall(function()  
-                        gyro.CFrame = hrp.CFrame * CFrame.Angles(0, angle, 0)  
-                    end)  
-                end)  
-            end  
-        elseif data[2] == "bangScript" then
-            -- Bang button logic here (as in previous merged script)
-        else  
-            pcall(function()  
-                loadstring(game:HttpGet(data[2], true))()  
-            end)  
-        end  
+        if data[2] == "localSpinR6" or data[2] == "localSpinR15" then
+            local tag = (data[2] == "localSpinR6") and "SpinGyroR6" or "SpinGyroR15"
+            local existing = hrp:FindFirstChild(tag)
+            if existing then
+                existing:Destroy()
+            else
+                local gyro = Instance.new("BodyGyro")
+                gyro.Name = tag
+                gyro.P = 100000
+                gyro.D = 10
+                gyro.MaxTorque = Vector3.new(0, math.huge, 0)
+                gyro.CFrame = hrp.CFrame
+                gyro.Parent = hrp
+                local angle = 0
+                local conn
+                conn = RunService.RenderStepped:Connect(function(dt)
+                    if not gyro.Parent then conn:Disconnect() return end
+                    angle = angle + math.rad(10) * 60 * dt
+                    pcall(function()
+                        gyro.CFrame = hrp.CFrame * CFrame.Angles(0, angle, 0)
+                    end)
+                end)
+            end
+        else
+            pcall(function()
+                loadstring(game:HttpGet(data[2], true))()
+            end)
+        end
     end)
 end
 
