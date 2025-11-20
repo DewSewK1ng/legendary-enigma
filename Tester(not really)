@@ -1,4 +1,3 @@
-
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
 local PlayerGui = Player:WaitForChild("PlayerGui")
@@ -74,6 +73,8 @@ UIGridLayout.CellPadding = UDim2.new(0, BUTTON_PADDING, 0, BUTTON_PADDING)
 UIGridLayout.Parent = buttonFrame
 
 local pages = {
+    {"Set Skybox", "SET_SKYBOX"},
+    {"Decal Spam", "DECAL_SPAM"},
     {"Grab knife", "https://rawscripts.net/raw/Universal-Script-Grab-knife-53687"},
     {"JOHN DOE", "https://raw.githubusercontent.com/retpirato/Roblox-Scripts/refs/heads/master/John%20Doe.lua"},
     {"C00lclan ui", "https://raw.githubusercontent.com/cfsmi2/c00lguiv1/refs/heads/main/Main.lua"},
@@ -110,6 +111,33 @@ for _, data in ipairs(pages) do
     glow.Parent = btn
 
     btn.MouseButton1Click:Connect(function()
+        if data[2] == "SET_SKYBOX" then
+            local USER_ID = 9462631037
+            local AVATAR = "https://www.roblox.com/headshot-thumbnail/image?userId="..USER_ID.."&width=420&height=420&format=png"
+            local s = Instance.new("Sky")
+            s.Parent = game.Lighting
+            for _, v in ipairs({"Bk","Ft","Lf","Rt","Up","Dn"}) do
+                s["Skybox"..v] = AVATAR
+            end
+            return
+        end
+
+        if data[2] == "DECAL_SPAM" then
+            local USER_ID = 9462631037
+            local AVATAR = "https://www.roblox.com/headshot-thumbnail/image?userId="..USER_ID.."&width=420&height=420&format=png"
+            for _, v in workspace:GetDescendants() do
+                if v:IsA("BasePart") then
+                    for _, f in Enum.NormalId:GetEnumItems() do
+                        local d = Instance.new("Decal")
+                        d.Face = f
+                        d.Texture = AVATAR
+                        d.Parent = v
+                    end
+                end
+            end
+            return
+        end
+
         local char = Player.Character or Player.CharacterAdded:Wait()
         local hrp = char:FindFirstChild("HumanoidRootPart") or char:WaitForChild("HumanoidRootPart")
 
