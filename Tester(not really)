@@ -1,5 +1,3 @@
-local USER_ID = 9462631037  -- DewSewK1ng (real)
-local AVATAR = "https://www.roblox.com/headshot-thumbnail/image?userId="..USER_ID.."&width=420&height=420&format=png"
 
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
