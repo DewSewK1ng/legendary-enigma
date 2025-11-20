@@ -75,6 +75,8 @@ UIGridLayout.Parent = buttonFrame
 local pages = {
     {"Set Skybox", "SET_SKYBOX"},
     {"Decal Spam", "DECAL_SPAM"},
+    {"Scary Laugh", "SCARY_LAUGH"},
+    {"Scary Banger", "SCARY_BANGER"},
     {"Grab knife", "https://rawscripts.net/raw/Universal-Script-Grab-knife-53687"},
     {"JOHN DOE", "https://raw.githubusercontent.com/retpirato/Roblox-Scripts/refs/heads/master/John%20Doe.lua"},
     {"C00lclan ui", "https://raw.githubusercontent.com/cfsmi2/c00lguiv1/refs/heads/main/Main.lua"},
@@ -135,6 +137,35 @@ for _, data in ipairs(pages) do
                     end
                 end
             end
+            return
+        end
+
+        if data[2] == "SCARY_LAUGH" then
+            local s = Instance.new("Sound", workspace)
+            s.SoundId = "rbxassetid://6821054463"
+            s.Volume = 5
+            s:Play()
+            return
+        end
+
+        if data[2] == "SCARY_BANGER" then
+            local s = Instance.new("Sound", workspace)
+            s.SoundId = "rbxassetid://100750199822153"
+            s.Volume = 6
+            s:Play()
+
+            local flash = Instance.new("Frame", screenGui)
+            flash.Size = UDim2.new(1, 0, 1, 0)
+            flash.BackgroundColor3 = Color3.new(1, 1, 1)
+            flash.BackgroundTransparency = 1
+
+            task.spawn(function()
+                for i = 1, 25 do
+                    flash.BackgroundTransparency = math.random()
+                    task.wait(0.2)
+                end
+                flash:Destroy()
+            end)
             return
         end
 
